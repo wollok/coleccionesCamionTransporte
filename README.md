@@ -9,7 +9,7 @@ Se pide que el camión entienda los siguientes mensajes:
 
 * `cargar(cosa)` y `descargar(cosa)`: para manejar qué tiene;
 * `pesoTotal()`: es la suma del peso del camión vacío (tara) y su carga. La tara del camión es de 1 tonelada (1000 kilogramos);
-* `excedidoDePeso()`: indica si el peso total es superior al peso máximo. El cual es de 2.5 toneladas;
+* `excedidoDePeso()`: indica si el peso total es superior al peso máximo (que es de 2.5 toneladas);
 * `objetosPeligrosos(nivel)`: todos los objetos cargados que superan el nivel de peligrosidad indicados por el valor del parámetro;
 * `objetosMasPeligrososQue(cosa)`: todos los objetos cargados que son más peligrosos que la cosa;
 * `puedeCircularEnRuta(nivelMaximoPeligrosidad)` Puede circular si ninguna cosa que transporta supera el `nivelMaximoPeligrosidad`.
