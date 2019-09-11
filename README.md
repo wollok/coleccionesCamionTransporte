@@ -7,12 +7,15 @@ Para eso requiere un sistema que le permita planificar qué cosas debe llevar el
 ## El camión
 Se pide que el camión entienda los siguientes mensajes:
 
-* `cargar(cosa)` y `descargar(cosa)`: para manejar qué tiene;
-* `pesoTotal()`: es la suma del peso del camión vacío (tara) y su carga. La tara del camión es de 1 tonelada (1000 kilogramos);
-* `excedidoDePeso()`: indica si el peso total es superior al peso máximo (que es de 2.5 toneladas);
-* `objetosPeligrosos(nivel)`: todos los objetos cargados que superan el nivel de peligrosidad indicados por el valor del parámetro;
-* `objetosMasPeligrososQue(cosa)`: todos los objetos cargados que son más peligrosos que la cosa;
-* `puedeCircularEnRuta(nivelMaximoPeligrosidad)` Puede circular si ninguna cosa que transporta supera el `nivelMaximoPeligrosidad`.
+* `cargar(cosa)` y `descargar(cosa)`: para manejar qué tiene.
+* `todoPesoPar()`: si el peso de cada uno de los objetos cargados es un número par.
+* `hayAlgunoQuePesa(peso)`: indica si hay alguno de los objetos cargados que tiene exactamente el peso indicado.
+* `elDeNivel(nivel)`: devuelve el primer objeto cargado que encuentre, cuyo nivel de peligrosidad coincida exactamente con el valor indicado.   
+* `pesoTotal()`: es la suma del peso del camión vacío (tara) y su carga. La tara del camión es de 1000 kilos.
+* `excedidoDePeso()`: indica si el peso total es superior al peso máximo, que es de 2500 kilos.
+* `objetosQueSuperanPeligrosidad(nivel)`: devuelve una colección con los objetos cargados que superan el nivel de peligrosidad indicado.
+* `objetosMasPeligrososQue(cosa)`: devuelve una colección con los objetos cargados que son más peligrosos que la cosa indicada.
+* `puedeCircularEnRuta(nivelMaximoPeligrosidad)` Puede circular si no está excedido de peso, y además, ninguno de los objetos cargados supera el nivel máximo de peligrosidad indicado.
 
 ## Las cosas
 De las cosas que puede transportar el camión nos interesa el peso y la peligrosidad:
@@ -27,14 +30,15 @@ De las cosas que puede transportar el camión nos interesa el peso y la peligros
 * Embalaje de seguridad: es una cobertura que envuelve a cualquier otra cosa. El peso es el peso de la cosa que tenga adentro. El nivel de peligrosidad es la mitad del nivel de peligrosidad de lo que envuelve.
 
 ## Agregados al camión
-
 Se pide agregar estos mensajes al camión:
 
 * `tieneAlgoQuePesaEntre(min, max)`: indica si el peso de alguna de las cosas que tiene el camión está en ese intervalo;
 * `cosaMasPesada()`: la cosa más pesada que tenga el camión. Ojo que lo que se pide es _la cosa_ y no su peso.
-* `totalBultos()`: la suma de la cantidad de bultos que está transportando. KnightRider, arena a granel y residuos radioactivos son 1 bulto. Bumblebee y embalaje de seguridad son dos. Paquete de ladrillos es 1 hasta 100 ladrillos, 2 de 101 a 300, 3 301 o más. Batería antiaérea: 1 si no tiene misiles, 2 si tiene. Contenedor portuario: 1 + los bultos que tiene adentro.
 * `pesos()`: devuelve una lista con _los pesos_ de cada cosa que tiene el camión.
+* `totalBultos()`: la suma de la cantidad de bultos que está transportando. KnightRider, arena a granel y residuos radioactivos son 1 bulto. Bumblebee y embalaje de seguridad son dos. Paquete de ladrillos es 1 hasta 100 ladrillos, 2 de 101 a 300, 3 301 o más. Batería antiaérea: 1 si no tiene misiles, 2 si tiene. Contenedor portuario: 1 + los bultos que tiene adentro.
 
+
+## Consecuencias de la carga.
 Agregar la posibilidad de que al cargar una cosa en el camión, esta pueda sufrir cambios. Estos cambios tienen que ocurrir automáticamente cuando, por ejemplo, se ejecuta `camion.cargar(arenaGranel)`. Cómo debería reaccionar cada cosa:
 
 - KnightRider: no hace nada;
