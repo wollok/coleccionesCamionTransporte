@@ -1,3 +1,6 @@
-bin/
-target/
-wollokREPL.wlk
+
+# Local history
+.history
+
+# Wollok Log
+*.log
