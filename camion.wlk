@@ -1,9 +1,59 @@
 import cosas.*
 
 object camion {
-	const property cosas = #{}
+	var property cosas = #{}
+	const maximo = 2500
+	const tara = 1000
 		
-	method cargar(unaCosa) {
-		cosas.add(unaCosa)
+	method validarCargar(cosa) {
+		if (cosas.contains(cosa)) {
+			self.error("No se puede cargar " + cosa + " porque ya estaba cargada")
+		}
 	}
+
+	method cargar(cosa) {
+		self.validarCargar(cosa)
+		cosas.add(cosa)
+	}
+	
+	method validarDescargar(cosa) {
+		if (not cosas.contains(cosa)) {
+			self.error("No se puede descargar " + cosa + " porque no estaba cargada")
+		}
+	}
+
+	method descargar(cosa){
+		self.validarDescargar(cosa)
+		cosas.remove(cosa)
+	}
+	method todoPesoPar() {
+		return cosas.all({cosa => cosa.peso().even()})
+	}
+	method hayAlgunoQuePesa(peso) {
+		return cosas.any({cosa=>cosa.peso() == peso})
+	}
+	method elDeNivel(nivel) {
+		return cosas.find({cosa => cosa.peligrosidad() == nivel})
+	}
+	method pesoTotal() {
+		return tara + cosas.sum({cosa=> cosa.peso()})
+	}
+	method excedidoDePeso() {
+		return self.pesoTotal() > maximo
+	}
+	method objetosQueSuperanPeligrosidad(nivel) {
+		return cosas.filter({cosa => cosa.peligrosidad() > nivel})
+	}
+	
+	method hayObjetosQueSuperanPeligrosidad(nivel) {
+		return cosas.any({cosa => cosa.peligrosidad() > nivel})
+	}
+
+	method objetosMasPeligrososQue(cosa) {
+		return self.objetosQueSuperanPeligrosidad(cosa.peligrosidad())
+	}
+	method puedeCircularEnRuta(nivel) {
+		return not self.excedidoDePeso() and not self.hayObjetosQueSuperanPeligrosidad(nivel)
+	} 
+
 }
