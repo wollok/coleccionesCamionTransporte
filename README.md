@@ -35,7 +35,12 @@ Se pide agregar estos mensajes al camión:
 * `tieneAlgoQuePesaEntre(min, max)`: indica si el peso de alguna de las cosas que tiene el camión está en ese intervalo;
 * `cosaMasPesada()`: la cosa más pesada que tenga el camión. Ojo que lo que se pide es _la cosa_ y no su peso.
 * `pesos()`: devuelve una lista con _los pesos_ de cada cosa que tiene el camión.
-* `totalBultos()`: la suma de la cantidad de bultos que está transportando. KnightRider, arena a granel y residuos radioactivos son 1 bulto. Bumblebee y embalaje de seguridad son dos. Paquete de ladrillos es 1 hasta 100 ladrillos, 2 de 101 a 300, 3 301 o más. Batería antiaérea: 1 si no tiene misiles, 2 si tiene. Contenedor portuario: 1 + los bultos que tiene adentro.
+* `totalBultos()`: la suma de la cantidad de bultos que está transportando.
+  - KnightRider, arena a granel y residuos radioactivos usan 1 bulto cada uno.
+  - Bumblebee y embalaje de seguridad usan dos bultos cada uno.
+  - Paquete de ladrillos usa 1 bulto hasta 100 ladrillos, 2 bultos si son de 101 a 300 ladrillos, 3 bultos si son 301 o más ladrillos.
+  - Batería antiaérea: usa 1 bulto si no tiene misiles, 2 si tiene.
+  - Contenedor portuario: usa 1 bulto más de la cantidad de bultos que usan las cosas que tiene adentro.
 
 ## Consecuencias de la carga.
 Agregar la posibilidad de que al cargar una cosa en el camión, esta pueda sufrir cambios. Estos cambios tienen que ocurrir automáticamente cuando, por ejemplo, se ejecuta `camion.cargar(arenaGranel)`. Cómo debería reaccionar cada cosa:
