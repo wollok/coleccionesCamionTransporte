@@ -55,5 +55,33 @@ object camion {
 	method puedeCircularEnRuta(nivel) {
 		return not self.excedidoDePeso() and not self.hayObjetosQueSuperanPeligrosidad(nivel)
 	} 
+	method tieneAlgoEntre(min,max) {
+		return cosas.any({cosa => cosa.peso().between(min, max)})
+	}
+	method cosaMasPesada() {
+		return cosas.max({cosa => cosa.peso()})
+	}
 
+	method pesos() {
+		return cosas.map({cosa => cosa.peso()})
+	}
+	method bultos() {
+		return cosas.sum({cosa => cosa.bultos()})
+	}
+
+	method accidente() {
+		cosas.forEach({cosa => cosa.accidente()})
+	}
+
+	method validarTransportar(camino, destino) {
+		if (not camino.puedeTransportar(self)) {
+			self.error("No se puede transportar por " + camino)
+		}
+	}
+	method transportar(camino, destino) {
+		self.validarTransportar(camino, destino)
+		destino.agregar(cosas)
+		cosas.clear()
+		
+	}
 }

@@ -114,55 +114,168 @@ Agregar las siguientes cosas para ser transportadas por el camión:
   - si el embalaje de seguridad envuelve a bumblebee en modo auto su peso es 800 y su peligrisdad 7.5
 
 
-## Agregados al camión
-Se pide agregar estos mensajes al camión:
+### tiene algo que pesa entre dos valores
 
-* `tieneAlgoQuePesaEntre(min, max)`: indica si el peso de alguna de las cosas que tiene el camión está en ese intervalo;
-* `cosaMasPesada()`: la cosa más pesada que tenga el camión. Ojo que lo que se pide es _la cosa_ y no su peso.
-* `pesos()`: devuelve una lista con _los pesos_ de cada cosa que tiene el camión.
-* `totalBultos()`: la suma de la cantidad de bultos que está transportando.
+Saber si el camion tiene algo que pesa entre dos valores (mínimo y máximo)
+
+#### Ejemplo
+Para un camion cargado con bumblebee y un paquete de 300 ladrillos:
+-  tiene algo que que pesa entre 5 y 100
+-  tiene algo que pesa entre 5 y 1000
+-  no tiene algo que pesa entre 900 y 1000
+
+### Cosa más pesada
+ la cosa más pesada que tenga el camión. Ojo que lo que se pide es _la cosa_ y no su peso.
+
+#### Ejemplo
+  - Para un camion cargado con bumblebee y un paquete de 300 ladrillos, la cosa más pesada es bumblebee
+  - Para un camion vacío, no se puede calcular la cosa más pesada
+
+### pesos
+Saber todos los pesos de las cosas que tiene el camión.
+
+#### Ejemplo
+  - Para un camion cargado con bumblebee y un paquete de 300 ladrillos, los pesos son 800 y 600 
+  Nota: ojo al armar el test, porque para wollok [800,600] es distinto a [600,800]. A nivel de negocio da igual
+
+### TodalBultos
+Cada cosa se puede transportar en uno o más bultos, dependiendo de la cosa en sí:
+
   - KnightRider, arena a granel y residuos radioactivos usan 1 bulto cada uno.
   - Bumblebee y embalaje de seguridad usan dos bultos cada uno.
   - Paquete de ladrillos usa 1 bulto hasta 100 ladrillos, 2 bultos si son de 101 a 300 ladrillos, 3 bultos si son 301 o más ladrillos.
   - Batería antiaérea: usa 1 bulto si no tiene misiles, 2 si tiene.
   - Contenedor portuario: usa 1 bulto más de la cantidad de bultos que usan las cosas que tiene adentro.
 
-## Consecuencias de la carga.
-Agregar la posibilidad de que al cargar una cosa en el camión, esta pueda sufrir cambios. Estos cambios tienen que ocurrir automáticamente cuando, por ejemplo, se ejecuta `camion.cargar(arenaGranel)`. Cómo debería reaccionar cada cosa:
+Se pide saber la cantidad total de bultos que está transportando el camion.
+
+#### Ejemplos
+
+##### Caso 1
+ Suponiendo que el camion tiene:
+ - el contenedor portuario con knightRider y bumblebee
+ - el embalaje de seguridad está envolviendo los residuos radiactivos
+ - arena a granel
+ - un paquete de 50 ladrillos
+ - la batería antiaérea descargada
+  Entonces la cantidad de bultos es: 9
+
+##### Caso 2
+
+Si el camion tiene:
+  -un paquete de 150 ladrillos 
+  -la bateria antiaérea cargada
+  -un contendeor portuario vacío
+  Entonces la cantidad de butlos es 5
+
+##### Caso 3
+
+Si el camion tiene 
+ - un paquete de 350 ladrillos
+ - arena a granel
+ Entonces la cantidad de bultos es 4
+
+### Accidente
+
+Si el camión sufre un accidente, las cosas que está transportando sufren algún efecto
+
+Éstas son los efectos para cada cosa al accidentarse el camión:
 
 - KnightRider: no hace nada;
-- Bumblebee: pasa a robot;
-- paquete de ladrillos: agrega 12 ladrillos;
+- Bumblebee: cambia  de modo robot (si estaba en robot pasa a auto y viceversa);
+- paquete de ladrillos: pierde hasta 12 ladrillos. Si tenía menos de 12 queda en 0;
 - arena a granel: agrega 20 kilos;
-- batería antiaérea: carga misiles;
-- contenedor portuario: hace que reaccione cada una de las cosas que tiene adentro;
+- batería antiaérea: descarga los misiles;
+- contenedor portuario: hace que reaccione cada una de las cosas que tiene adentro (por ejemplo, si llevaba a bumblebee, éste queda en modo robot);
 - residuos radioactivos: agrega 15 kilos;
 - embalaje de seguridad: nada.
 
+Se pide modelar que un camión sufre un accidente, aplicando los efectos a las cosas cargadas
+
+#### Ejemplos
+
+##### Caso 1
+
+Suponiendo que el camion tiene:
+ - el contenedor portuario con knightRider y bumblebee en modo auto
+ - el embalaje de seguridad está envolviendo 30 kg residuos radiactivos 
+ - 50 kg de arena a granel
+ - un paquete de 100 ladrillos
+ - la batería antiaérea cargada
+
+Al producirse un accidente:
+- bumblebee queda en modo robot
+- residuos radiactivos queda con 30kg de pesos
+- la arena queda con 70 kg
+- el paquete de ladrillo queda con 88 ladrillos
+- la bateria aerea queda descargada
+
+##### Caso 2
+
+Suponiendo que el camion tiene:
+ - bumblebee en modo robot
+ - 30 kg residuos radiactivos 
+ - un paquete de 10 ladrillos
+ - la batería antiaérea descargada
+
+Al producirse un accidente:
+- bumblebee queda en modo auto
+- residuos radiactivos queda con 45kg de pesos
+- el paquete de ladrillo queda con 0 ladrillos
+- la bateria aerea queda descargada
+  
+
 ## Transporte.
 
-El camión de transporte transporta los elementos al almacén. Al rllegar al almacén, todas las cosas que están en el camión pasan al almacén: 
-Por ejemplo, si el camión tiene a Knight Rider y a Bumblebee, mientras que  el almacén está la arena a granel, cuando el camión 
-llega éste queda vacío y en el almacén quedan bumblebee, arena a grandel y Knight Rider.
+El camión transporta los elementos al almacén. Al llegar al almacén, todas las cosas que están en el camión pasan al almacén: El camión queda vacío y el almacen se quedan las cosas que ya tenía más aquellas transportadas por el camión.
+
+Por ejemplo, si el camión tiene a Knight Rider y a Bumblebee, mientras que en el almacén está la arena a granel, cuando el camión llega éste queda vacío y en el almacén quedan bumblebee, arena a grandel y Knight Rider.
 
 El viaje puede ser por la ruta 9 o por caminos vecinales. Esta elección se hace al momento de realizar el transporte.
 
-Para que el transporte pueda ser realizado debe cumplirse con las siguientes condiciones:
-* El camión no tiene que estar excedido de peso
-* El almacén tiene una cantidad de bultos máximos que no puede superar. Por ejemplo, si contiene arena a granel (1 bulto), el máximo de bultos
-del almacén se configura en 3, y el camión contiene a Bumblebee y Knight Rider (3 bultos), entonces no se puede transportar.
-* El camino soporte el viaje:
-	* El nivel de peligrosidad de la ruta 9 es 11, solo se puede usar la ruta 9 en los casos en "puedaCircularEnRuta" del punto 1
-	* Los caminos vecinales tienen un peso máximo soportado que es configurable. El peso total del camión no puede ser superior al peso tolerado
+Para que el transporte pueda ser realizado debe cumplirse con las siguientes condiciones el camino 
+debe soportar el viaje:
+	* La ruta nueve soporta viajes según el requerimiento "pueda Circular En Ruta" (resulto anteriormente) con un nivel de peligrosidad de 20.
+	* Los caminos vecinales soportan viajes de vehículos que no superen el peso máximo permitido, el cual es configurable. 
 
-
-Se pide que el camión entienda el mensaje `transportar(destino, camino)` Donde destino es el almacén (pero se parametriza porque podría
-aparecer otros lugares) y el camino es una de las dos opciones (ruta 9 o caminos vecinales, pero también se debe pensar que pueda haber otros caminos
-polimórficos.
+Se pide que el camión entienda el mensaje `transportar(destino, camino)` Donde destino es el almacén (pero se parametriza porque podría aparecer otros lugares) y el camino es una de las dos opciones (ruta 9 o caminos vecinales, pero también se debe pensar que pueda haber otros caminos polimórficos.
 
 Es importante realizar las validaciones correspondientes.
 
+#### Ejemplo
 
+Para todos los casos, el almacen tiene a Knight rider y residuos radiactivos. 
+El camion arranca teniendo a bumblebe en modo auto y arena a granel con 50 kg
+
+#### Caso: ruta 9 exitoso
+El camion puede transportar sin problemas por la ruta nueve hacia el almacén. 
+En el almacén queda Knight rider, residuos radiactivos, bumblebee y arena a granel.
+El camión queda vacío.
+
+#### Caso: ruta 9 fallido por peligrosidad
+cambiar el modo de bumblebee a robot. 
+El camion no puede transportar por la ruta nueve hacia el almacén (fallará el nivel de peligrosidad). 
+En el almacén queda Knight rider y residuos radiactivos.
+En el camión quedan bumblebee y arena a granel.
+ 
+#### Caso: ruta 9 fallido por exceso de peso
+cambiar el peso de la arena a granel a 2000 kg
+El camion no puede transportar por la ruta nueve hacia el almacén (fallará por exceso de peso del camión). 
+En el almacén queda Knight rider y residuos radiactivos.
+En el camión quedan bumblebee y arena a granel.
+
+#### Caso: caminos vecinales exitoso
+Configurar los caminos vecinales con un máximo de 2000 kg de soporte
+El camion puede transportar sin problemas por los caminos vecinales hacia el almacén. 
+En el almacén queda Knight rider, residuos radiactivos, bumblebee y arena a granel.
+El camión queda vacío.
+
+#### Caso: caminos vecinales fallido
+Configurar los caminos vecinales con un máximo de 300 kg de soporte
+El camion no puede transportar por los caminos vecinales hacia el almacen. 
+En el almacén queda Knight rider y residuos radiactivos.
+El camión queda vacío.
+En el camión quedan bumblebee y arena a granel.
 
 
 
